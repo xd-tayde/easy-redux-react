@@ -1,0 +1,1 @@
+{"version":3,"file":"rollup-typescript-startkit.es.js","sources":["../lib/index.ts"],"sourcesContent":["export default class Lib {\n    constructor() {\n        console.log(\"start lib\")\n    }\n}\n"],"names":[],"mappings":"AAAA;IACI;QACI,OAAO,CAAC,GAAG,CAAC,WAAW,CAAC,CAAA;KAC3B;IACL,UAAC;CAAA,IAAA;;;;"}

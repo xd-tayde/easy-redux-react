@@ -11,7 +11,6 @@
         }
         return Lib;
     }());
-    //# sourceMappingURL=index.js.map
 
     // You can debug or use the instance from lib in here.
     var lib = new Lib();
