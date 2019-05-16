@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
-import HappyRedux from './happyRedux'
+import EasyReduxReact from '../lib/easyReduxReact'
 import reduxConfig from './config'
 
 type type_reduxConfig = typeof reduxConfig
@@ -8,13 +8,12 @@ type type_storeKey = {
     [key in keyof type_reduxConfig]: key
 }
 export const storeKey = {} as type_storeKey
-Object.keys(reduxConfig).map(stateKey => storeKey[stateKey] = stateKey)
-
-const _ins = new HappyRedux({
+Object.keys(reduxConfig).map((stateKey) => storeKey[stateKey] = stateKey)
+const _ins = new EasyReduxReact({
     reduxConfig,
     useHydrateData: {
-        elId: 'SSR_HYDRATED_DATA'
-    },  
+        elId: 'SSR_HYDRATED_DATA',
+    },
 })
 
 export const store = _ins.getStore()

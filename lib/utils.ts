@@ -6,7 +6,7 @@ const class2type = {}
  * @export string
  * @param { any } obj
  */
-const type = (obj: any) => {
+export const type = (obj: any) => {
     if (obj == null) return String(obj)
     return typeof obj === "object" ? class2type[ Object.prototype.toString.call(obj) ] || "object" : typeof obj
 }

@@ -1,7 +1,7 @@
 import { combineReducers, createStore, Reducer, Store } from 'redux'
 import { connect } from 'react-redux'
 import { handleActions, createAction } from 'redux-actions'
-import { type } from '@Tools/index'
+import { type } from './utils'
 
 // 对象循环
 const forin = (obj: object, fn: (value: any, key: string) => any) => {
@@ -12,11 +12,11 @@ const forin = (obj: object, fn: (value: any, key: string) => any) => {
 const toHump = (name: string) => name.toLowerCase().replace(/\_(\w)/g, (all, letter: string) => letter.toUpperCase())
 
 interface IReduxConfig {
-    [propsName: string] : {
+    [propsName: string]: {
         initValue: any,
         actions: {
-            [propsName: string]: (state: any, data: any) => any
-        }
+            [propsName: string]: (state: any, data: any) => any,
+        },
     }
 }
 
@@ -34,9 +34,7 @@ interface IPorps {
     handleRes?: IHandleRes
 }
 
-
-
-export default class HappyRedux {
+export default class EasyReduxReact {
     private store: Store
     private hydrateData: object | null = null
     private reducers: Reducer
@@ -57,7 +55,7 @@ export default class HappyRedux {
             .initReducers()
             .createStore()
     }
-    
+
     // 创建 store
     private createStore() {
         this.store = createStore(this.reducers)
@@ -75,12 +73,12 @@ export default class HappyRedux {
         this.reducers = combineReducers(_reducers)
         return this
     }
-    
+
     // 使用 ssr 传递的数据
     private initHydrateData() {
         if (!this.useHydrateData) return this
         const hydrateElId = this.useHydrateData.elId
-        if(this.isBrowser) {
+        if (this.isBrowser) {
             const hydratedEl = document.getElementById(hydrateElId)
             if (hydratedEl && hydratedEl.textContent) {
                 try {
@@ -107,10 +105,10 @@ export default class HappyRedux {
     }
 
     // 连接属性
-    private connectState(stateKeys: string[]){
+    private connectState(stateKeys: string[]) {
         return (state: any) => {
             const _o = {}
-            stateKeys.map(v => _o[v] = state[v])
+            stateKeys.map((v) => _o[v] = state[v])
             return _o
         }
     }
@@ -122,9 +120,9 @@ export default class HappyRedux {
             forin(dispatchMap, (v: any, k) => {
                 _o[k] = (...data: any[]) => {
                     const typeV = type(v)
-                    if(typeV === 'string') {
+                    if (typeV === 'string') {
                         dispatch(createAction(v)(...data))
-                    }else if(typeV === 'object') {
+                    } else if (typeV === 'object') {
                         if (type(v.fetch) === 'function' ) {
                             return v.fetch(...data).then((res: any) => {
                                 if (this.checkRes(res)) {
@@ -151,9 +149,9 @@ export default class HappyRedux {
 
     private getDefaultDispatchMap(stateKeys: string[]) {
         const dispatchMap = {}
-        stateKeys.map(key => {
+        stateKeys.map((key) => {
             const actions = this.reduxConfig[key].actions
-            Object.keys(actions).map(actionName => {
+            Object.keys(actions).map((actionName) => {
                 const propsName = toHump(actionName)
                 dispatchMap[propsName] = actionName
             })
@@ -167,7 +165,4 @@ export default class HappyRedux {
         return connect(stateConnect, dispatchConnect)
     }
 }
-
-
-
 

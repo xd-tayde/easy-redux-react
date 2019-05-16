@@ -29,7 +29,8 @@
         "no-unused-expression": [true, "allow-fast-null-checks"],
         "member-ordering":[false],
         "jsx-boolean-value":false,
-        "prefer-const": false
+        "prefer-const": false,
+        "quotemark": false
     },
     "jsRules": {
         "object-literal-sort-keys": false,
