@@ -7,11 +7,12 @@ import typescript from 'rollup-plugin-typescript'
 import sass from 'rollup-plugin-sass'
 import serve from 'rollup-plugin-serve'
 import replace from 'rollup-plugin-replace'
+import globals from 'rollup-plugin-node-globals'
 
 // 包配置
 const packages = require('./package.json')
 // 环境变量
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV || 'development'
 // 路径配置
 const paths = {
     input: env === 'example' ? './example/' : './lib/',
@@ -36,11 +37,11 @@ switch (env) {
 }
 
 const Config = {
-    input: `${paths.input}index`,
+    input: `${paths.input}index.tsx`,
     output: {
         file: `${paths.dist}${fileName}.js`,
         format: env === 'es' ? 'es' : 'umd',
-        name: 'MCanvas',
+        name: 'EasyReduxReact',
         sourcemap: true,
         // 连接 livereload 
         intro: env === 'example' ? `document.write('<script src="http://' + (location.host || "localhost").split(":")[0] + ':35729/livereload.js?snipver=1"></' + "script>")` : '',
@@ -55,16 +56,23 @@ const Config = {
             plugins: [],
           }),
         resolve({
-            extensions: [ '.ts', '.js', '.json', '.node' ],
+            extensions: [ '.ts', '.tsx', '.js', '.json', '.node' ],
         }),
-        commonjs(),
+        commonjs({
+            include: 'node_modules/**',
+            namedExports: {
+                'node_modules/react/index.js': ['useRef', 'useReducer', 'useContext', 'useMemo', 'Component', 'PureComponent', 'Fragment', 'Children', 'createElement', 'useLayoutEffect', 'useEffect'],
+                'node_modules/react-dom/index.js': ['unstable_batchedUpdates', 'render'],
+                'node_modules/react-is/index.js': ['isContextConsumer', 'isValidElementType'],
+            }
+        }),
         typescript(),
         sass({
             output: `${paths.dist}/main.css`,
         }),
         replace({
             exclude: 'node_modules/**',
-            ENV: JSON.stringify(env || 'development'),
+            ENV: JSON.stringify(env),
         }),
         // 开发时开启服务
         (env === 'example' && serve({
@@ -73,7 +81,8 @@ const Config = {
             open: true,
         })),
         (env === 'production' && uglify()),
-        sourcemaps(),
+        (env === 'production' && sourcemaps()),
+        globals(),
     ],
 }
 

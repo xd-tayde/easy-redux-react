@@ -1,32 +1,71 @@
-import * as React from 'react'
-import { Provider } from 'react-redux'
-import EasyReduxReact from '../lib/easyReduxReact'
+// console.log(1)
+// import "./main.scss"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider, connect } from 'react-redux'
+import EasyReduxReact from '../lib/easy-redux-react'
 import reduxConfig from './config'
 
-type type_reduxConfig = typeof reduxConfig
-type type_storeKey = {
-    [key in keyof type_reduxConfig]: key
-}
-export const storeKey = {} as type_storeKey
-Object.keys(reduxConfig).map((stateKey) => storeKey[stateKey] = stateKey)
-const _ins = new EasyReduxReact({
-    reduxConfig,
-    useHydrateData: {
-        elId: 'SSR_HYDRATED_DATA',
-    },
-})
+const mountNode = document.getElementById('App') as HTMLElement
 
-export const store = _ins.getStore()
-export const dispatch = store.dispatch
-export const getState = store.getState
-export const subscribe = store.subscribe
-export const connectTo = (stateKeys: string[], dispatchMap?: object) => _ins.connect.bind(_ins)(stateKeys, dispatchMap)
-export function StoreProvider(props: any) {
+const _ins = new EasyReduxReact({ reduxConfig })
+console.log(_ins)
+
+const store = _ins.getStore()
+
+export const connectTo = (stateKeys: string[], dispatchMap?: object) => {
+    return _ins.connectTo.bind(_ins)(stateKeys, dispatchMap)
+}
+
+const Home = (props) => {
+    console.log('home props', props)
     return (
-        <Provider store={store}>
-            {props.children}
-        </Provider>
+        <div>Home</div>
     )
 }
 
-export default _ins
+const mapStateToProps = (state) => {
+    return {
+        loginStatus: state.loginStatus,
+    }
+}
+
+connect(
+    mapStateToProps,
+    {},
+)(Home)
+
+class Make extends React.Component {
+    public render() {
+        return (
+            <div>Make</div>
+        )
+    }
+}
+
+// connectTo(['loginStatus'])(Make)
+// console.log(1, store.getState())
+
+// store.dispatch({
+//     type: 'SET_LOGIN_STATUS',
+//     payload: true,
+// })
+
+// console.log(2, store.getState())
+
+class App extends React.Component {
+    public render() {
+        return (
+            <div>App: <Home /><Make /></div>
+        )
+    }
+}
+
+console.log(3)
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    mountNode,
+)

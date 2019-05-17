@@ -9,7 +9,7 @@ export default {
     // key
     loginStatus: {
         // 初始状态
-        initValue: null,
+        initValue: false,
         actions: {
             SET_LOGIN_STATUS: (state: any, data: any) => {
                 return data.payload as boolean

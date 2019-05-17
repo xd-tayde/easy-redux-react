@@ -1,15 +1,7 @@
 import { combineReducers, createStore, Reducer, Store } from 'redux'
 import { connect } from 'react-redux'
 import { handleActions, createAction } from 'redux-actions'
-import { type } from './utils'
-
-// 对象循环
-const forin = (obj: object, fn: (value: any, key: string) => any) => {
-    for (const k in obj) obj.hasOwnProperty(k) && fn(obj[k], k)
-}
-
-// 全大写下划线 转 驼峰
-const toHump = (name: string) => name.toLowerCase().replace(/\_(\w)/g, (all, letter: string) => letter.toUpperCase())
+import { type, forin, toHump } from './utils'
 
 interface IReduxConfig {
     [propsName: string]: {
@@ -44,10 +36,16 @@ export default class EasyReduxReact {
     private checkRes: ICheckRes
     private handleRes: IHandleRes
     constructor(options: IPorps) {
-        this.reduxConfig = options.reduxConfig
-        this.useHydrateData = options.useHydrateData || false
-        this.checkRes = options.checkRes ? options.checkRes : (res: any) => true
-        this.handleRes = options.handleRes ? options.handleRes : (res: any) => res
+        const {
+            reduxConfig,
+            useHydrateData = false,
+            checkRes = (res: any) => true,
+            handleRes = (res: any) => res,
+        }  = options
+        this.reduxConfig = reduxConfig
+        this.useHydrateData = useHydrateData
+        this.checkRes = checkRes
+        this.handleRes = handleRes
         this.init()
     }
     private init() {
@@ -83,25 +81,13 @@ export default class EasyReduxReact {
             if (hydratedEl && hydratedEl.textContent) {
                 try {
                     this.hydrateData = JSON.parse(hydratedEl.textContent)
-                    // setTimeout(() => document.body.removeChild(hydratedEl), 0)
+                    setTimeout(() => document.body.removeChild(hydratedEl), 0)
                 } catch (error) {
                     console.error(`[getHydrateData error]error: ${error}`)
                 }
             }
         }
         return this
-    }
-
-    // 获取 store
-    public getStore() {
-        !this.store && this.init()
-        return this.store
-    }
-
-    // 获取 reducers
-    public getReducers() {
-        !this.reducers && this.initReducers()
-        return this.reducers
     }
 
     // 连接属性
@@ -132,7 +118,7 @@ export default class EasyReduxReact {
                                     return Promise.reject(res)
                                 }
                             }).catch((err: any) => {
-                                dispatch(createAction(v.error || 'ADD_ERROR')(err))
+                                v.error && dispatch(createAction(v.error)(err))
                                 return Promise.reject(err)
                             })
                         } else if (type(v.action) === 'string') {
@@ -159,10 +145,22 @@ export default class EasyReduxReact {
         return this.connectDispatch(dispatchMap)
     }
 
-    public connect(stateKeys: string[], dispatchMap?: object) {
+    // 获取 store
+    public getStore() {
+        !this.store && this.init()
+        return this.store
+    }
+
+    // 获取 reducers
+    public getReducers() {
+        !this.reducers && this.initReducers()
+        return this.reducers
+    }
+
+    // 连接组件
+    public connectTo(stateKeys: string[], dispatchMap?: object) {
         const stateConnect = this.connectState(stateKeys)
         const dispatchConnect = dispatchMap ? this.connectDispatch(dispatchMap) : this.getDefaultDispatchMap(stateKeys)
         return connect(stateConnect, dispatchConnect)
     }
 }
-
