@@ -1,39 +1,9 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-    typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.EasyReduxReact = {}));
-}(this, function (exports) { 'use strict';
+(function (factory) {
+    typeof define === 'function' && define.amd ? define(factory) :
+    factory();
+}(function () { 'use strict';
 
     document.write('<script src="http://' + (location.host || "localhost").split(":")[0] + ':35729/livereload.js?snipver=1"></' + "script>")
-
-    /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
-
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
-
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-    /* global Reflect, Promise */
-
-    var extendStatics = function(d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-
-    function __extends(d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    }
 
     var global$1 = (typeof global !== "undefined" ? global :
                 typeof self !== "undefined" ? self :
@@ -2109,17 +2079,18 @@
       module.exports = react_development;
     }
     });
-    var react_1 = react.useRef;
-    var react_2 = react.useReducer;
-    var react_3 = react.useContext;
-    var react_4 = react.useMemo;
-    var react_5 = react.Component;
-    var react_6 = react.PureComponent;
-    var react_7 = react.Fragment;
-    var react_8 = react.Children;
-    var react_9 = react.createElement;
-    var react_10 = react.useLayoutEffect;
-    var react_11 = react.useEffect;
+    var react_1 = react.useState;
+    var react_2 = react.useRef;
+    var react_3 = react.useReducer;
+    var react_4 = react.useContext;
+    var react_5 = react.useMemo;
+    var react_6 = react.Component;
+    var react_7 = react.PureComponent;
+    var react_8 = react.Fragment;
+    var react_9 = react.Children;
+    var react_10 = react.createElement;
+    var react_11 = react.useLayoutEffect;
+    var react_12 = react.useEffect;
 
     var scheduler_production_min = createCommonjsModule(function (module, exports) {
     Object.defineProperty(exports,"__esModule",{value:!0});var d=null,e=!1,g=3,k=-1,l=-1,m=!1,n=!1;function p(){if(!m){var a=d.expirationTime;n?q():n=!0;r(t,a);}}
@@ -24964,7 +24935,7 @@
       };
 
       return Provider;
-    }(react_5);
+    }(react_6);
 
     Provider.propTypes = {
       store: propTypes.shape({
@@ -25166,7 +25137,7 @@
     // a render is actually committed to the DOM.
 
 
-    var useIsomorphicLayoutEffect = typeof window !== 'undefined' ? react_10 : react_11;
+    var useIsomorphicLayoutEffect = typeof window !== 'undefined' ? react_11 : react_12;
     function connectAdvanced(
     /*
       selectorFactory is a func that is responsible for returning the selector function used to
@@ -25242,12 +25213,12 @@
         // that just executes the given callback immediately.
 
 
-        var usePureOnlyMemo = pure ? react_4 : function (callback) {
+        var usePureOnlyMemo = pure ? react_5 : function (callback) {
           return callback();
         };
 
         function ConnectFunction(props) {
-          var _useMemo = react_4(function () {
+          var _useMemo = react_5(function () {
             // Distinguish between actual "data" props that were passed to the wrapper component,
             // and values needed to control behavior (forwarded refs, alternate context instances).
             // To maintain the wrapperProps object reference, memoize this destructuring.
@@ -25261,25 +25232,25 @@
               forwardedRef = _useMemo[1],
               wrapperProps = _useMemo[2];
 
-          var ContextToUse = react_4(function () {
+          var ContextToUse = react_5(function () {
             // Users may optionally pass in a custom context instance to use instead of our ReactReduxContext.
             // Memoize the check that determines which context instance we should use.
             return propsContext && propsContext.Consumer && reactIs_1(react.createElement(propsContext.Consumer, null)) ? propsContext : Context;
           }, [propsContext, Context]); // Retrieve the store and ancestor subscription via context, if available
 
-          var contextValue = react_3(ContextToUse); // The store _must_ exist as either a prop or in context
+          var contextValue = react_4(ContextToUse); // The store _must_ exist as either a prop or in context
 
           var didStoreComeFromProps = Boolean(props.store);
           var didStoreComeFromContext = Boolean(contextValue) && Boolean(contextValue.store);
           invariant_1(didStoreComeFromProps || didStoreComeFromContext, "Could not find \"store\" in the context of " + ("\"" + displayName + "\". Either wrap the root component in a <Provider>, ") + "or pass a custom React context provider to <Provider> and the corresponding " + ("React context consumer to " + displayName + " in connect options."));
           var store = props.store || contextValue.store;
-          var childPropsSelector = react_4(function () {
+          var childPropsSelector = react_5(function () {
             // The child props selector needs the store reference as an input.
             // Re-create this selector whenever the store changes.
             return createChildSelector(store);
           }, [store]);
 
-          var _useMemo2 = react_4(function () {
+          var _useMemo2 = react_5(function () {
             if (!shouldHandleStateChanges) return NO_SUBSCRIPTION_ARRAY; // This Subscription's source should match where store came from: props vs. context. A component
             // connected to the store via props shouldn't use subscription from context, or vice versa.
 
@@ -25296,7 +25267,7 @@
           // and memoize that value to avoid unnecessary context updates.
 
 
-          var overriddenContextValue = react_4(function () {
+          var overriddenContextValue = react_5(function () {
             if (didStoreComeFromProps) {
               // This component is directly subscribed to a store from props.
               // We don't want descendants reading from this store - pass down whatever
@@ -25312,7 +25283,7 @@
           }, [didStoreComeFromProps, contextValue, subscription]); // We need to force this wrapper component to re-render whenever a Redux store update
           // causes a change to the calculated child component props (or we caught an error in mapState)
 
-          var _useReducer = react_2(storeStateUpdatesReducer, EMPTY_ARRAY, initStateUpdates),
+          var _useReducer = react_3(storeStateUpdatesReducer, EMPTY_ARRAY, initStateUpdates),
               _useReducer$ = _useReducer[0],
               previousStateUpdateResult = _useReducer$[0],
               forceComponentUpdateDispatch = _useReducer[1]; // Propagate any mapState/mapDispatch errors upwards
@@ -25323,10 +25294,10 @@
           } // Set up refs to coordinate values between the subscription effect and the render logic
 
 
-          var lastChildProps = react_1();
-          var lastWrapperProps = react_1(wrapperProps);
-          var childPropsFromStoreUpdate = react_1();
-          var renderIsScheduled = react_1(false);
+          var lastChildProps = react_2();
+          var lastWrapperProps = react_2(wrapperProps);
+          var childPropsFromStoreUpdate = react_2();
+          var renderIsScheduled = react_2(false);
           var actualChildProps = usePureOnlyMemo(function () {
             // Tricky logic here:
             // - This render may have been triggered by a Redux store update that produced new child props
@@ -25438,14 +25409,14 @@
           }, [store, subscription, childPropsSelector]); // Now that all that's done, we can finally try to actually render the child component.
           // We memoize the elements for the rendered child component as an optimization.
 
-          var renderedWrappedComponent = react_4(function () {
+          var renderedWrappedComponent = react_5(function () {
             return react.createElement(WrappedComponent, _extends({}, actualChildProps, {
               ref: forwardedRef
             }));
           }, [forwardedRef, WrappedComponent, actualChildProps]); // If React sees the exact same element reference as last time, it bails out of re-rendering
           // that child, same as if it was wrapped in React.memo() or returned false from shouldComponentUpdate.
 
-          var renderedChild = react_4(function () {
+          var renderedChild = react_5(function () {
             if (shouldHandleStateChanges) {
               // If this component is subscribed to store updates, we need to pass its own
               // subscription instance down to our descendants. That means rendering the same
@@ -26722,20 +26693,28 @@
     };
     //# sourceMappingURL=utils.js.map
 
+    var OUTPUT = {
+        _pre: "[easy-redux-react]",
+        warn: function (msg) {
+            console.warn(OUTPUT._pre + "warn: " + msg);
+        },
+        error: function (msg) {
+            throw new Error(OUTPUT._pre + "error: " + msg + ".");
+        },
+    };
     var EasyReduxReact = /** @class */ (function () {
         function EasyReduxReact(options) {
             this.hydrateData = null;
             this.isBrowser = typeof document === 'object';
-            var reduxConfig = options.reduxConfig, _a = options.useHydrateData, useHydrateData = _a === void 0 ? false : _a, _b = options.checkRes, checkRes = _b === void 0 ? function (res) { return true; } : _b, _c = options.handleRes, handleRes = _c === void 0 ? function (res) { return res; } : _c;
+            var reduxConfig = options.reduxConfig, _a = options.hydrateData, hydrateData = _a === void 0 ? null : _a, _b = options.checkRes, checkRes = _b === void 0 ? function () { return true; } : _b, _c = options.handleRes, handleRes = _c === void 0 ? function (res) { return res; } : _c;
             this.reduxConfig = reduxConfig;
-            this.useHydrateData = useHydrateData;
+            this.hydrateData = hydrateData;
             this.checkRes = checkRes;
             this.handleRes = handleRes;
             this.init();
         }
         EasyReduxReact.prototype.init = function () {
-            this.initHydrateData()
-                .initReducers()
+            this.initReducers()
                 .createStore();
         };
         // 创建 store
@@ -26754,25 +26733,6 @@
                 _reducers[stateKey] = handleActions(reducerMap, value);
             });
             this.reducers = combineReducers(_reducers);
-            return this;
-        };
-        // 使用 ssr 传递的数据
-        EasyReduxReact.prototype.initHydrateData = function () {
-            if (!this.useHydrateData)
-                return this;
-            var hydrateElId = this.useHydrateData.elId;
-            if (this.isBrowser) {
-                var hydratedEl_1 = document.getElementById(hydrateElId);
-                if (hydratedEl_1 && hydratedEl_1.textContent) {
-                    try {
-                        this.hydrateData = JSON.parse(hydratedEl_1.textContent);
-                        setTimeout(function () { return document.body.removeChild(hydratedEl_1); }, 0);
-                    }
-                    catch (error) {
-                        console.error("[getHydrateData error]error: " + error);
-                    }
-                }
-            }
             return this;
         };
         // 连接属性
@@ -26802,7 +26762,10 @@
                             if (type(v.fetch) === 'function') {
                                 return v.fetch.apply(v, data).then(function (res) {
                                     if (_this.checkRes(res)) {
-                                        dispatch(createAction(v.success)(_this.handleRes(res)));
+                                        if (v.success) {
+                                            dispatch(createAction(v.success)(_this.handleRes(res)));
+                                            OUTPUT.warn('the dispatchMap item should have a success action.');
+                                        }
                                         return res;
                                     }
                                     else {
@@ -26817,7 +26780,7 @@
                                 dispatch(createAction(v.action).apply(void 0, data));
                             }
                             else {
-                                throw new Error('[dispatchMap error!]');
+                                OUTPUT.error('dispatchMap error!');
                             }
                         }
                     };
@@ -26835,7 +26798,7 @@
                     dispatchMap[propsName] = actionName;
                 });
             });
-            return this.connectDispatch(dispatchMap);
+            return dispatchMap;
         };
         // 获取 store
         EasyReduxReact.prototype.getStore = function () {
@@ -26848,85 +26811,69 @@
             return this.reducers;
         };
         // 连接组件
-        EasyReduxReact.prototype.connectTo = function (stateKeys, dispatchMap) {
+        EasyReduxReact.prototype.connectTo = function (module, stateKeys, dispatchMap) {
+            if (stateKeys === void 0) { stateKeys = Object.keys(this.reduxConfig); }
+            if (dispatchMap === void 0) { dispatchMap = this.getDefaultDispatchMap(stateKeys); }
+            if (!module) {
+                OUTPUT.error("the first parameter must be a react component to connect");
+            }
             var stateConnect = this.connectState(stateKeys);
-            var dispatchConnect = dispatchMap ? this.connectDispatch(dispatchMap) : this.getDefaultDispatchMap(stateKeys);
-            return connect(stateConnect, dispatchConnect);
+            var dispatchConnect = this.connectDispatch(dispatchMap);
+            return connect(stateConnect, dispatchConnect)(module);
         };
         return EasyReduxReact;
     }());
     //# sourceMappingURL=easy-redux-react.js.map
 
-    // redux-store
-    var reduxConfig = {
-        // key
-        loginStatus: {
-            // 初始状态
-            initValue: false,
-            actions: {
-                SET_LOGIN_STATUS: function (state, data) {
-                    return data.payload;
+    var mountNode = document.getElementById('App');
+    var _ins = new EasyReduxReact({
+        reduxConfig: {
+            // key
+            list: {
+                // initState
+                initValue: [],
+                // actions map
+                actions: {
+                    // action name: reducer
+                    ADD_LIST: function (state, data) {
+                        return state.concat(data.payload);
+                    },
+                    REMOVE_LIST: function (state, data) {
+                        var _list = state.slice();
+                        _list.splice(data.payload, 1);
+                        return _list;
+                    },
                 },
             },
         },
-    };
-    //# sourceMappingURL=config.js.map
-
-    var mountNode = document.getElementById('App');
-    var _ins = new EasyReduxReact({ reduxConfig: reduxConfig });
-    console.log(_ins);
+        hydrateData: {},
+    });
     var store = _ins.getStore();
-    var connectTo = function (stateKeys, dispatchMap) {
-        return _ins.connectTo.bind(_ins)(stateKeys, dispatchMap);
-    };
-    var Home = function (props) {
+    var App = function (props) {
         console.log('home props', props);
-        return (react.createElement("div", null, "Home"));
+        var _a = react_1(''), inputValue = _a[0], onInput = _a[1];
+        var list = props.list, addList = props.addList, removeList = props.removeList;
+        return (react.createElement("div", { className: "" },
+            react.createElement("h1", null, "Easy-redux-react App"),
+            react.createElement("ul", null,
+                react.createElement("li", null, "TODOs:"),
+                list.map(function (v, index) {
+                    return (react.createElement("li", { key: index },
+                        v,
+                        react.createElement("i", { className: "remove", onClick: function () { removeList(index); } }, "X")));
+                })),
+            react.createElement("div", { className: "add" },
+                react.createElement("input", { type: "text", value: inputValue, onChange: function (e) {
+                        onInput(e.target.value);
+                    } }),
+                react.createElement("div", { onClick: function () {
+                        inputValue && addList(inputValue);
+                    } }, "Add To List"))));
     };
-    var mapStateToProps = function (state) {
-        return {
-            loginStatus: state.loginStatus,
-        };
-    };
-    connect(mapStateToProps, {})(Home);
-    var Make = /** @class */ (function (_super) {
-        __extends(Make, _super);
-        function Make() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        Make.prototype.render = function () {
-            return (react.createElement("div", null, "Make"));
-        };
-        return Make;
-    }(react.Component));
-    // connectTo(['loginStatus'])(Make)
-    // console.log(1, store.getState())
-    // store.dispatch({
-    //     type: 'SET_LOGIN_STATUS',
-    //     payload: true,
-    // })
-    // console.log(2, store.getState())
-    var App = /** @class */ (function (_super) {
-        __extends(App, _super);
-        function App() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        App.prototype.render = function () {
-            return (react.createElement("div", null,
-                "App: ",
-                react.createElement(Home, null),
-                react.createElement(Make, null)));
-        };
-        return App;
-    }(react.Component));
-    console.log(3);
+    var ReduxApp = _ins.connectTo(App);
     reactDom.render(react.createElement(Provider, { store: store },
-        react.createElement(App, null)), mountNode);
+        react.createElement(ReduxApp, null)), mountNode);
     //# sourceMappingURL=index.js.map
-
-    exports.connectTo = connectTo;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=example.js.map

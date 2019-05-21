@@ -12,45 +12,50 @@ interface IReduxConfig {
     }
 }
 
-interface IUseHydrateData {
-    elId: string
-}
-
 type ICheckRes = (res: any) => boolean
 type IHandleRes= (res: any) => any
 
 interface IPorps {
     reduxConfig: IReduxConfig
-    useHydrateData?: IUseHydrateData
+    hydrateData?: object
     checkRes?: ICheckRes
     handleRes?: IHandleRes
 }
 
+const OUTPUT = {
+    _pre: `[easy-redux-react]`,
+    warn: (msg: string) => {
+        console.warn(`${OUTPUT._pre}warn: ${msg}`)
+    },
+    error: (msg: string) => {
+        throw new Error(`${OUTPUT._pre}error: ${msg}.`)
+    },
+}
+
 export default class EasyReduxReact {
+    // redux store
     private store: Store
     private hydrateData: object | null = null
     private reducers: Reducer
     private reduxConfig: IReduxConfig
-    private useHydrateData: IUseHydrateData | false
     private isBrowser: boolean = typeof document === 'object'
     private checkRes: ICheckRes
     private handleRes: IHandleRes
     constructor(options: IPorps) {
         const {
             reduxConfig,
-            useHydrateData = false,
-            checkRes = (res: any) => true,
+            hydrateData = null,
+            checkRes = () => true,
             handleRes = (res: any) => res,
         }  = options
         this.reduxConfig = reduxConfig
-        this.useHydrateData = useHydrateData
+        this.hydrateData = hydrateData
         this.checkRes = checkRes
         this.handleRes = handleRes
         this.init()
     }
     private init() {
-        this.initHydrateData()
-            .initReducers()
+        this.initReducers()
             .createStore()
     }
 
@@ -62,31 +67,13 @@ export default class EasyReduxReact {
     // 通过 reduxConfig 转换成 reducers
     private initReducers() {
         const _reducers = {}
-        forin(this.reduxConfig, ({ initValue, actions }, stateKey) => {
+        forin(this.reduxConfig, ({ initValue, actions }, stateKey: string) => {
             const reducerMap = {}
             const value = (this.hydrateData && this.hydrateData[stateKey]) || initValue
             forin(actions, (reducer: (state: any, data: any) => any, action) => reducerMap[action] = reducer)
             _reducers[stateKey] = handleActions(reducerMap, value)
         })
         this.reducers = combineReducers(_reducers)
-        return this
-    }
-
-    // 使用 ssr 传递的数据
-    private initHydrateData() {
-        if (!this.useHydrateData) return this
-        const hydrateElId = this.useHydrateData.elId
-        if (this.isBrowser) {
-            const hydratedEl = document.getElementById(hydrateElId)
-            if (hydratedEl && hydratedEl.textContent) {
-                try {
-                    this.hydrateData = JSON.parse(hydratedEl.textContent)
-                    setTimeout(() => document.body.removeChild(hydratedEl), 0)
-                } catch (error) {
-                    console.error(`[getHydrateData error]error: ${error}`)
-                }
-            }
-        }
         return this
     }
 
@@ -109,10 +96,13 @@ export default class EasyReduxReact {
                     if (typeV === 'string') {
                         dispatch(createAction(v)(...data))
                     } else if (typeV === 'object') {
-                        if (type(v.fetch) === 'function' ) {
+                        if (type(v.fetch) === 'function') {
                             return v.fetch(...data).then((res: any) => {
                                 if (this.checkRes(res)) {
-                                    dispatch(createAction(v.success)(this.handleRes(res)))
+                                    if (v.success) {
+                                        dispatch(createAction(v.success)(this.handleRes(res)))
+                                        OUTPUT.warn('the dispatchMap item should have a success action.')
+                                    }
                                     return res
                                 } else {
                                     return Promise.reject(res)
@@ -124,7 +114,7 @@ export default class EasyReduxReact {
                         } else if (type(v.action) === 'string') {
                             dispatch(createAction(v.action)(...data))
                         } else {
-                            throw new Error('[dispatchMap error!]')
+                            OUTPUT.error('dispatchMap error!')
                         }
                     }
                 }
@@ -142,7 +132,7 @@ export default class EasyReduxReact {
                 dispatchMap[propsName] = actionName
             })
         })
-        return this.connectDispatch(dispatchMap)
+        return dispatchMap
     }
 
     // 获取 store
@@ -158,9 +148,16 @@ export default class EasyReduxReact {
     }
 
     // 连接组件
-    public connectTo(stateKeys: string[], dispatchMap?: object) {
+    public connectTo(
+        module: object,
+        stateKeys: string[] = Object.keys(this.reduxConfig),
+        dispatchMap: object = this.getDefaultDispatchMap(stateKeys),
+    ) {
+        if (!module) {
+            OUTPUT.error(`the first parameter must be a react component to connect`)
+        }
         const stateConnect = this.connectState(stateKeys)
-        const dispatchConnect = dispatchMap ? this.connectDispatch(dispatchMap) : this.getDefaultDispatchMap(stateKeys)
-        return connect(stateConnect, dispatchConnect)
+        const dispatchConnect = this.connectDispatch(dispatchMap)
+        return connect(stateConnect, dispatchConnect)(module)
     }
 }

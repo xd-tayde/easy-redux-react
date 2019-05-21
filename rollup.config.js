@@ -61,7 +61,7 @@ const Config = {
         commonjs({
             include: 'node_modules/**',
             namedExports: {
-                'node_modules/react/index.js': ['useRef', 'useReducer', 'useContext', 'useMemo', 'Component', 'PureComponent', 'Fragment', 'Children', 'createElement', 'useLayoutEffect', 'useEffect'],
+                'node_modules/react/index.js': ['useState', 'useRef', 'useReducer', 'useContext', 'useMemo', 'Component', 'PureComponent', 'Fragment', 'Children', 'createElement', 'useLayoutEffect', 'useEffect'],
                 'node_modules/react-dom/index.js': ['unstable_batchedUpdates', 'render'],
                 'node_modules/react-is/index.js': ['isContextConsumer', 'isValidElementType'],
             }

@@ -1,71 +1,78 @@
-// console.log(1)
-// import "./main.scss"
-import React from 'react'
+import "./main.scss"
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Provider, connect } from 'react-redux'
+import { Provider } from 'react-redux'
 import EasyReduxReact from '../lib/easy-redux-react'
-import reduxConfig from './config'
 
 const mountNode = document.getElementById('App') as HTMLElement
 
-const _ins = new EasyReduxReact({ reduxConfig })
-console.log(_ins)
+const _ins = new EasyReduxReact({
+    reduxConfig: {
+        // key
+        list: {
+            // initState
+            initValue: [],
+            // actions map
+            actions: {
+                // action name: reducer
+                ADD_LIST: (state: any[], data: { payload: any, type: string }) => {
+                    return state.concat(data.payload)
+                },
+                REMOVE_LIST: (state: any[], data: { payload: number, type: string }) => {
+                    const _list = [...state]
+                    _list.splice(data.payload, 1)
+                    return _list
+                },
+            },
+        },
+    },
+    hydrateData: {
+
+    },
+ })
 
 const store = _ins.getStore()
 
-export const connectTo = (stateKeys: string[], dispatchMap?: object) => {
-    return _ins.connectTo.bind(_ins)(stateKeys, dispatchMap)
-}
-
-const Home = (props) => {
+const App = (props) => {
     console.log('home props', props)
+    const [ inputValue, onInput ] = useState('')
+    const { list, addList, removeList } = props
     return (
-        <div>Home</div>
+        <div className="">
+            <h1>Easy-redux-react App</h1>
+            <ul>
+                <li>TODOs:</li>
+                {list.map((v: string, index: number) => {
+                    return (
+                        <li key={index}>
+                            {v}
+                            <i className="remove"
+                                onClick={() => {removeList(index)}}
+                            >X</i>
+                        </li>
+                    )
+                })}
+            </ul>
+            <div className="add">
+                <input type="text" value={inputValue}
+                    onChange={(e) => {
+                        onInput(e.target.value)
+                    }}
+                />
+                <div onClick={() => {
+                        inputValue && addList(inputValue)
+                    }}
+                >Add To List</div>
+            </div>
+        </div>
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        loginStatus: state.loginStatus,
-    }
-}
-
-connect(
-    mapStateToProps,
-    {},
-)(Home)
-
-class Make extends React.Component {
-    public render() {
-        return (
-            <div>Make</div>
-        )
-    }
-}
-
-// connectTo(['loginStatus'])(Make)
-// console.log(1, store.getState())
-
-// store.dispatch({
-//     type: 'SET_LOGIN_STATUS',
-//     payload: true,
-// })
-
-// console.log(2, store.getState())
-
-class App extends React.Component {
-    public render() {
-        return (
-            <div>App: <Home /><Make /></div>
-        )
-    }
-}
-
-console.log(3)
+const ReduxApp = _ins.connectTo(App)
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <ReduxApp />
     </Provider>,
     mountNode,
 )
