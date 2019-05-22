@@ -58,3 +58,60 @@ h1 {
     line-height: 80px;
     margin: 20px 0;
 }
+
+.App{
+    .add{
+        input, &-btn {
+            border: 1px solid rgb(112, 112, 112);
+            border-radius: 4px;
+            line-height: 30px;
+            font-size: 22px;
+            padding: 5px 10px;
+            vertical-align: top;
+        }
+        &-btn{
+            display: inline-block;
+            font-size: 18px;
+            margin-left: 40px;
+            &:hover{
+                background-color: black;
+                color: #fff;
+                cursor: pointer;
+            }
+        }
+    }
+    .todos{
+        margin-top: 40px;
+        .title{
+            font-size: 26px;
+        }
+        .list{
+            display: inline-block;
+            width: 500px;
+            li{
+                position: relative;
+                border: 1px solid rgb(112, 112, 112);
+                border-radius: 4px;
+                font-size: 18px;
+                padding: 10px 10px;
+                margin-top: 20px;
+            }
+            .remove{
+                background-color: rgb(255, 65, 65);
+                color: #fff;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                border-radius: 4px;
+                line-height: 40px;
+                position: absolute;
+                right: 2px;
+                top: 3px;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgb(202, 0, 0);
+                }
+            }
+        }
+    }
+}

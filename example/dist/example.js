@@ -26705,7 +26705,6 @@
     var EasyReduxReact = /** @class */ (function () {
         function EasyReduxReact(options) {
             this.hydrateData = null;
-            this.isBrowser = typeof document === 'object';
             var reduxConfig = options.reduxConfig, _a = options.hydrateData, hydrateData = _a === void 0 ? null : _a, _b = options.checkRes, checkRes = _b === void 0 ? function () { return true; } : _b, _c = options.handleRes, handleRes = _c === void 0 ? function (res) { return res; } : _c;
             this.reduxConfig = reduxConfig;
             this.hydrateData = hydrateData;
@@ -26831,7 +26830,7 @@
             // key
             list: {
                 // initState
-                initValue: [],
+                initValue: ['todo-1111', 'todo-2222', 'todo-33333333', 'todo-4444444'],
                 // actions map
                 actions: {
                     // action name: reducer
@@ -26846,34 +26845,32 @@
                 },
             },
         },
-        hydrateData: {},
     });
     var store = _ins.getStore();
     var App = function (props) {
-        console.log('home props', props);
         var _a = react_1(''), inputValue = _a[0], onInput = _a[1];
         var list = props.list, addList = props.addList, removeList = props.removeList;
-        return (react.createElement("div", { className: "" },
-            react.createElement("h1", null, "Easy-redux-react App"),
-            react.createElement("ul", null,
-                react.createElement("li", null, "TODOs:"),
-                list.map(function (v, index) {
-                    return (react.createElement("li", { key: index },
-                        v,
-                        react.createElement("i", { className: "remove", onClick: function () { removeList(index); } }, "X")));
-                })),
+        return (react.createElement("div", { className: "App" },
+            react.createElement("h1", null, "Easy-Redux-React App"),
             react.createElement("div", { className: "add" },
                 react.createElement("input", { type: "text", value: inputValue, onChange: function (e) {
                         onInput(e.target.value);
                     } }),
-                react.createElement("div", { onClick: function () {
+                react.createElement("div", { className: "add-btn", onClick: function () {
                         inputValue && addList(inputValue);
-                    } }, "Add To List"))));
+                        onInput('');
+                    } }, "Add To List")),
+            react.createElement("div", { className: "todos" },
+                react.createElement("h2", { className: "title" }, "TODOs:"),
+                react.createElement("ul", { className: "list" }, list.map(function (v, index) {
+                    return (react.createElement("li", { key: index },
+                        v,
+                        react.createElement("i", { className: "remove", onClick: function () { removeList(index); } }, "X")));
+                })))));
     };
     var ReduxApp = _ins.connectTo(App);
     reactDom.render(react.createElement(Provider, { store: store },
         react.createElement(ReduxApp, null)), mountNode);
-    //# sourceMappingURL=index.js.map
 
 }));
 //# sourceMappingURL=example.js.map

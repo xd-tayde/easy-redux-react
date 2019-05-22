@@ -7,7 +7,7 @@ interface IReduxConfig {
     [propsName: string]: {
         initValue: any,
         actions: {
-            [propsName: string]: (state: any, data: any) => any,
+            [propsName: string]: (state: any, data: { payload: number, type: string }) => any,
         },
     }
 }
@@ -38,7 +38,6 @@ export default class EasyReduxReact {
     private hydrateData: object | null = null
     private reducers: Reducer
     private reduxConfig: IReduxConfig
-    private isBrowser: boolean = typeof document === 'object'
     private checkRes: ICheckRes
     private handleRes: IHandleRes
     constructor(options: IPorps) {

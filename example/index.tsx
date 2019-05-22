@@ -11,7 +11,7 @@ const _ins = new EasyReduxReact({
         // key
         list: {
             // initState
-            initValue: [],
+            initValue: ['todo-1111', 'todo-2222', 'todo-33333333', 'todo-4444444'],
             // actions map
             actions: {
                 // action name: reducer
@@ -26,43 +26,42 @@ const _ins = new EasyReduxReact({
             },
         },
     },
-    hydrateData: {
-
-    },
  })
 
 const store = _ins.getStore()
 
 const App = (props) => {
-    console.log('home props', props)
     const [ inputValue, onInput ] = useState('')
     const { list, addList, removeList } = props
     return (
-        <div className="">
-            <h1>Easy-redux-react App</h1>
-            <ul>
-                <li>TODOs:</li>
-                {list.map((v: string, index: number) => {
-                    return (
-                        <li key={index}>
-                            {v}
-                            <i className="remove"
-                                onClick={() => {removeList(index)}}
-                            >X</i>
-                        </li>
-                    )
-                })}
-            </ul>
+        <div className="App">
+            <h1>Easy-Redux-React App</h1>
             <div className="add">
                 <input type="text" value={inputValue}
                     onChange={(e) => {
                         onInput(e.target.value)
                     }}
                 />
-                <div onClick={() => {
+                <div className="add-btn" onClick={() => {
                         inputValue && addList(inputValue)
+                        onInput('')
                     }}
                 >Add To List</div>
+            </div>
+            <div className="todos">
+                <h2 className="title">TODOs:</h2>
+                <ul className="list">
+                    {list.map((v: string, index: number) => {
+                        return (
+                            <li key={index}>
+                                {v}
+                                <i className="remove"
+                                    onClick={() => {removeList(index)}}
+                                >X</i>
+                            </li>
+                        )
+                    })}
+                </ul>
             </div>
         </div>
     )

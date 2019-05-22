@@ -162,3 +162,56 @@ h1 {
   line-height: 80px;
   margin: 20px 0;
 }
+
+.App .add input, .App .add-btn {
+  border: 1px solid #707070;
+  border-radius: 4px;
+  line-height: 30px;
+  font-size: 22px;
+  padding: 5px 10px;
+  vertical-align: top;
+}
+.App .add-btn {
+  display: inline-block;
+  font-size: 18px;
+  margin-left: 40px;
+}
+.App .add-btn:hover {
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+}
+.App .todos {
+  margin-top: 40px;
+}
+.App .todos .title {
+  font-size: 26px;
+}
+.App .todos .list {
+  display: inline-block;
+  width: 500px;
+}
+.App .todos .list li {
+  position: relative;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  font-size: 18px;
+  padding: 10px 10px;
+  margin-top: 20px;
+}
+.App .todos .list .remove {
+  background-color: #ff4141;
+  color: #fff;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  line-height: 40px;
+  position: absolute;
+  right: 2px;
+  top: 3px;
+  cursor: pointer;
+}
+.App .todos .list .remove:hover {
+  background-color: #ca0000;
+}
