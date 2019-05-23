@@ -1,16 +1,13 @@
 ## Easy-Redux-React
 
-该插件封装了 react-redux 的 api, 集中化管理 store, action 与 reducer, 简化了使用，降低接入成本。
+该插件封装了 react-redux 的 api, 集中化管理 store, action 与 reducer, 简化了使用，极小的接入成本，即插即用。
 
 ### Usage
 
-#### 1. 初始化实例
-
-- `new EasyReduxReact(options)`
-    - 
-
 ```js
 import EasyReduxReact from 'easy-redux-react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 // redux-store
 const _ins = new EasyReduxReact({
     reduxConfig: {
@@ -26,6 +23,36 @@ const _ins = new EasyReduxReact({
         },
     },
  })
+
+ const App = () => (
+     <div id="App">easy-redux-react</div>
+ )
+
+ const ReduxApp = _ins.connectTo(App)
+ const store = _ins.getStore()
+ 
+ ReactDOM.render(
+    <Provider store={store}>
+        <ReduxApp />
+    </Provider>,
+    mountNode,
+)
+```
+
+#### 1. 初始化实例
+
+```js
+new EasyReduxReact({
+    // 
+    reduxConfig: IReduxConfig
+    hydrateData?: object
+    checkRes?: ICheckRes
+    handleRes?: IHandleRes
+})
+```
+
+```js
+
 ```
 
 ### 全局注入 store

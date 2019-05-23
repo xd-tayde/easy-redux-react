@@ -1,5 +1,5 @@
 {
-	"name": "rollup-typescript-startkit",
+	"name": "easy-redux-react",
 	"version": "1.0.1",
 	"description": "the simple rollup-typescript startkit aims to develop the javascript lib.",
 	"keywords": [
@@ -9,9 +9,9 @@
 		"rollup-example",
 		"typescript"
 	],
-	"main": "dist/rollup-typescript-startkit.js",
-	"module": "dist/mcanvas.es.js",
-	"moduleName": "RollupTypescriptStartkit",
+	"main": "dist/easy-redux-react.js",
+	"module": "dist/easy-redux-reac.es.js",
+	"moduleName": "EasyReduxReact",
 	"scripts": {
 		"reload": "./node_modules/.bin/livereload 'example/'",
 		"watch": "NODE_ENV=example rollup -w -c rollup.config.js",
@@ -45,6 +45,7 @@
 		"livereload": "^0.7.0",
 		"npm-run-all": "^4.1.5",
 		"rollup": "^1.10.1",
+		"rollup-plugin-auto-external": "^2.0.0",
 		"rollup-plugin-babel": "^4.3.2",
 		"rollup-plugin-commonjs": "^9.2.2",
 		"rollup-plugin-node-globals": "^1.4.0",

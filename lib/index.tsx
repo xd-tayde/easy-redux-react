@@ -1,5 +1,6 @@
+import React from 'react'
 import { combineReducers, createStore, Reducer, Store } from 'redux'
-import { connect } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import { handleActions, createAction } from 'redux-actions'
 import { type, forin, toHump } from './utils'
 
@@ -40,6 +41,8 @@ export default class EasyReduxReact {
     private reduxConfig: IReduxConfig
     private checkRes: ICheckRes
     private handleRes: IHandleRes
+    private Provider
+    private connect
     constructor(options: IPorps) {
         const {
             reduxConfig,
@@ -51,6 +54,8 @@ export default class EasyReduxReact {
         this.hydrateData = hydrateData
         this.checkRes = checkRes
         this.handleRes = handleRes
+        this.connect = connect
+        this.Provider = Provider
         this.init()
     }
     private init() {
@@ -157,6 +162,15 @@ export default class EasyReduxReact {
         }
         const stateConnect = this.connectState(stateKeys)
         const dispatchConnect = this.connectDispatch(dispatchMap)
-        return connect(stateConnect, dispatchConnect)(module)
+        return this.connect(stateConnect, dispatchConnect)(module)
+    }
+
+    public getProvider() {
+        const Provider = this.Provider
+        return (props) => (
+            <Provider store={this.getStore()}>
+                {props.children}
+            </Provider>
+        )
     }
 }

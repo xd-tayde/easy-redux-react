@@ -1,8 +1,7 @@
 import "./main.scss"
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import EasyReduxReact from '../lib/easy-redux-react'
+import EasyReduxReact from '../lib/index'
 
 const mountNode = document.getElementById('App') as HTMLElement
 
@@ -27,8 +26,6 @@ const _ins = new EasyReduxReact({
         },
     },
  })
-
-const store = _ins.getStore()
 
 const App = (props) => {
     const [ inputValue, onInput ] = useState('')
@@ -68,9 +65,11 @@ const App = (props) => {
 }
 
 const ReduxApp = _ins.connectTo(App)
+const Provider = _ins.getProvider()
 
+console.log('ReduxApp', ReduxApp)
 ReactDOM.render(
-    <Provider store={store}>
+    <Provider>
         <ReduxApp />
     </Provider>,
     mountNode,
