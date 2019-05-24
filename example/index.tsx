@@ -1,7 +1,7 @@
 import "./main.scss"
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import EasyReduxReact from '../lib/index'
+import EasyReduxReact from './easy-redux-react.es'
 
 const mountNode = document.getElementById('App') as HTMLElement
 
@@ -67,7 +67,6 @@ const App = (props) => {
 const ReduxApp = _ins.connectTo(App)
 const Provider = _ins.getProvider()
 
-console.log('ReduxApp', ReduxApp)
 ReactDOM.render(
     <Provider>
         <ReduxApp />

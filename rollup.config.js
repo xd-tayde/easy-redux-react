@@ -46,6 +46,7 @@ const Config = {
         // 连接 livereload 
         intro: env === 'example' ? `document.write('<script src="http://' + (location.host || "localhost").split(":")[0] + ':35729/livereload.js?snipver=1"></' + "script>")` : '',
     },
+    external: ['react', 'redux', 'react-redux'],
     plugins: [
         // babel 编译
         babel({
@@ -53,7 +54,7 @@ const Config = {
             babelrc: false,
             presets: [['@babel/preset-env', { modules: false }]],
             runtimeHelpers: true,
-            plugins: [],
+            plugins: ['@babel/plugin-external-helpers'],
           }),
         resolve({
             extensions: [ '.ts', '.tsx', '.js', '.json', '.node' ],
