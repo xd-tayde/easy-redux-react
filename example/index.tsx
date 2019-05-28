@@ -1,7 +1,7 @@
 import "./main.scss"
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-import EasyReduxReact from './easy-redux-react.es'
+import EasyReduxReact from '../lib/index'
 
 const mountNode = document.getElementById('App') as HTMLElement
 

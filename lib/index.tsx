@@ -13,6 +13,14 @@ interface IReduxConfig {
     }
 }
 
+interface IDispatchMap {
+    [actionName: string]: string | {
+        fetch: (...params: any) => Promise<any>,
+        success: string,
+        error?: string,
+    }
+}
+
 type ICheckRes = (res: any) => boolean
 type IHandleRes= (res: any) => any
 
@@ -91,7 +99,7 @@ export default class EasyReduxReact {
     }
 
     // 连接方法
-    private connectDispatch(dispatchMap: any) {
+    private connectDispatch(dispatchMap: IDispatchMap) {
         return (dispatch: any) => {
             const _o = {}
             forin(dispatchMap, (v: any, k) => {
@@ -155,7 +163,7 @@ export default class EasyReduxReact {
     public connectTo(
         module: object,
         stateKeys: string[] = Object.keys(this.reduxConfig),
-        dispatchMap: object = this.getDefaultDispatchMap(stateKeys),
+        dispatchMap: IDispatchMap = this.getDefaultDispatchMap(stateKeys),
     ) {
         if (!module) {
             OUTPUT.error(`the first parameter must be a react component to connect`)
