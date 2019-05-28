@@ -1,7 +1,7 @@
 (function (global, factory) {
             typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('react'), require('redux'), require('react-redux')) :
             typeof define === 'function' && define.amd ? define(['react', 'redux', 'react-redux'], factory) :
-            (global = global || self, global.EasyReduxReact = factory(global.React, global.redux, global.reactRedux));
+            (global = global || self, global.EasyReduxReact = factory(global.React, global.Redux, global.ReactRedux));
 }(this, function (React, redux, reactRedux) { 'use strict';
 
             React = React && React.hasOwnProperty('default') ? React['default'] : React;

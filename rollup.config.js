@@ -43,6 +43,12 @@ const Config = {
         format: env === 'es' ? 'es' : 'umd',
         name: 'EasyReduxReact',
         sourcemap: true,
+        globals: {
+            react: 'React',
+            redux: 'Redux',
+            'react-dom': 'ReactDOM',
+            'react-redux': 'ReactRedux',
+        },
         // 连接 livereload 
         intro: env === 'example' ? `document.write('<script src="http://' + (location.host || "localhost").split(":")[0] + ':35729/livereload.js?snipver=1"></' + "script>")` : '',
     },

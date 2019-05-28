@@ -1,7 +1,7 @@
 {
 	"name": "easy-redux-react",
-	"version": "1.0.1",
-	"description": "a lib to make redux with react easier.",
+	"version": "1.0.2",
+	"description": "a helper to make redux with react easier.",
 	"keywords": [
 		"react-redux",
 		"redux",
